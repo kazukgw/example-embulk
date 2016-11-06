@@ -1,0 +1,17 @@
+in:
+  type: mysql
+  host: {{ env.MYSQL_HOST }}
+  user: {{ env.MYSQL_USER }}
+  password: {{ env.MYSQL_PASSWORD }}
+  database:
+  table:
+
+out:
+  mode: replace
+  type: sqlserver
+  host: {{ env.MSSQL_HOST }}
+  user: {{ env.MSSQL_USER }}
+  password: {{ env.MSSQL_PASSWORD }}
+  instance: {{ env.MSSQL_INSTANCE }}
+  database:
+  table:

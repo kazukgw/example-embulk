@@ -1,0 +1,48 @@
+version: '2'
+services:
+  mysql1:
+    image: mysql:5.6
+
+    # hostの3306とcontainerの3306をつなぐ
+    ports:
+      - "13306:3306"
+
+    # ほかのコンテナに公開するポート
+    expose:
+      - "3306"
+
+    # host(この場合boot2docker) と syncするdirectory
+    volumes:
+      # mysql の設定自動読み込み
+      - ./mysql1/conf.d:/etc/mysql/conf.d
+      # 流しこむSQLを置く場所
+      - ./mysql1/initdb.d:/docker-entrypoint-initdb.d
+
+    # 環境変数
+    environment:
+      # 最初のイメージ起動に作成するユーザ名
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      MYSQL_ROOT_PASSWORD:
+      # 最初のイメージ起動に作成するDB名
+      MYSQL_DATABASE:
+
+  embulk:
+    build: embulk
+    environment:
+      MYSQL_HOST:
+      MYSQL_USER:
+      MYSQL_PASSWORD:
+      GOOGLE_APPLICATION_CREDENTIALS: /root/app/xxxx.json
+      GOOGLE_BQ_PROJECT:
+      GOOGLE_BQ_DATASET:
+      GOOGLE_BQ_TABLE:
+      MSSQL_HOSTk:
+      MSSQL_USER:
+      MSSQL_PASSWORD:
+      MSSQL_INSTANCE:
+    command: tail -f /dev/null
+    volumes:
+      - ./embulk:/root/app
+    links:
+      - mysql1

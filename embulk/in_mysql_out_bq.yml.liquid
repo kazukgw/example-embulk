@@ -1,0 +1,22 @@
+in:
+  type: mysql
+  host: mysql1
+  user: root
+  password: "password"
+  database: sakila
+  table: actor
+
+
+# https://github.com/embulk/embulk-output-bigquery
+out:
+  type: bigquery
+  mode: replace
+  auth_method: json_key
+  json_keyfile: {{ env.GOOGLE_APPLICATION_CREDENTIALS }}
+  project: {{ env.GOOGLE_BQ_PROJECT }}
+  dataset: {{ env.GOOGLE_BQ_DATASET }}
+  table: {{ env.GOOGLE_BQ_TABLE }}
+  compression: GZIP
+  formatter:
+    type: csv
+    header_line: false
